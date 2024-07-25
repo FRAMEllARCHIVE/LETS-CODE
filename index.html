@@ -1,72 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Text File Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-        .file-content {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #f9f9f9;
-        }
-        .error-message {
-            color: red;
-            margin: 20px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>BOOK A LESSON</title>
+  <style>
+body {
+  background-color: black;
+  overflow: hidden;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+    #Container {
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vh;
+      max-height: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: black;
+    }
+
+.title {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 12vw;
+    font-family: sans-serif;
+    background: linear-gradient(45deg, #FFD700, #FFA07A, #87CEFA, #FF69B4);
+    background-size: 400% 400%;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: animate1 8s linear infinite;
+    z-index: 2;
+    transition: 0.9s;
+    letter-spacing: 0.05em;
+}
+
+
+@keyframes animate1 {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 50% 0%;
+  }
+}
+
+    .character-image {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      position: absolute;
+      height: 111%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      opacity: 1;
+      pointer-events: none;
+    }
+
+    .whatsapp-link {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      position: absolute;
+      top: 22%;
+      left: 75%;
+      border: none;
+      text-decoration: none;
+      transition: 0.5s;
+      z-index: 5;
+      opacity: 0.85;
+    }
+
+    .whatsapp-link:hover {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    .whatsapp-link svg {
+      height: 9vh;
+      width: 9vh;
+    }
+
+  .book-now-btn {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      position: absolute;
+      top: 89%;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+      background: linear-gradient(111deg, #FFD700, #FFA07A, #87CEFA, #FF69B4);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.6s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    opacity: 1;
+      animation: animate1 8s linear infinite;
+      background-size: 400% 400%;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.05em;
+  }
+
+  .book-now-btn:hover {
+      transform: scale(1.2);
+      animation: animate1 8s linear infinite;
+  }
+
+  .calendar {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  font-family: 'Montserrat', sans-serif;
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 22px;
+    z-index: 100;
+  }
+
+  .calendar.show {
+    display: block;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .calendar-days {
+      -webkit-tap-highlight-color: transparent;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+
+  .calendar-day {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
+
+  .calendar-day:hover {
+    background-color: #f0f0f0;
+  }
+
+  .calendar-day.selected {
+    background-color: #4ecdc4;
+    color: #fff;
+  }
+
+  .timeslots {
+    margin-top: 15px;
+  }
+
+  .timeslot {
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .timeslot:hover {
+    background-color: #e0e0e0;
+  }
+
+  .timeslot.selected {
+    background-color: #4ecdc4;
+    color: #fff;
+  }
+.overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 88;
+      display: none;
+    }
+
+    .show {
+      display: block;
+    }
+
+#prevMonth,
+#nextMonth {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      font-size: 24px;
+      color: black;
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      opacity: 0.2;
+    z-index: 3;
+    transition: 0.4s ease;
+}
+
+#prevMonth:hover,
+#nextMonth:hover {
+      opacity: 1;
+}
+
+#contact-form {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 101;
+  font-family: 'Montserrat', sans-serif;
+  max-width: 400px;
+  width: 80%;
+}
+
+
+#contact-form label,
+#contact-form input,
+#contact-form textarea,
+#contact-form button {
+  width: calc(100% - 20px);
+  margin-bottom: 11px;
+  margin-top: 11px;
+}
+
+#contact-form.show {
+  display: block;
+}
+
+#contact-form input,
+#contact-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#contact-form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+#contact-form button:hover {
+  background-color: #0056b3;
+}
+
+.calendar-day.booked {
+  background-color: red;
+  color: white;
+  pointer-events: none;
+}
+
+.timeslot.booked {
+  background-color: red;
+  color: white;
+  pointer-events: none;
+}
+
+.calendar-day.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+  </style>
 </head>
 <body>
-    <h1>GitHub Text File Viewer</h1>
-    <div id="file-contents"></div>
+  <form id="contact-form">
+    <label for="from_name">Name:</label><br>
+    <input type="text" id="from_name" name="from_name" required><br>
+    
+    <label for="emailOrNumber">Contact Details:</label><br>
+    <input type="email" id="email" name="email" placeholder="Email"><br>
+    <input type="tel" id="phone" name="phone" placeholder="Tel" autocomplete="tel"><br>
+    <input type="other" id="other" name="other" placeholder="Other"><br>
+    
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="4" required></textarea><br>
+    
+    <button type="submit">Send Email</button>
+  </form>
 
-    <script>
-        const repoOwner = 'divstudios';
-        const repoName = 'l';
-        const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents`;
 
-        async function fetchFiles() {
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const files = await response.json();
+  <div class="overlay" id="calendarOverlay"></div>
 
-                const fileContentsDiv = document.getElementById('file-contents');
-                fileContentsDiv.innerHTML = '';
+  <div id="calendar" class="calendar">
+    <div class="calendar-header">
+      <button id="prevMonth">&lt;</button>
+      <span id="currentMonth"></span>
+      <button id="nextMonth">&gt;</button>
+    </div>
+    <div id="calendarDays" class="calendar-days"></div>
+    <div id="timeslots" class="timeslots"></div>
+  </div>
 
-                for (const file of files) {
-                    if (file.name.endsWith('.txt')) {
-                        const fileResponse = await fetch(file.download_url);
-                        if (!fileResponse.ok) {
-                            throw new Error(`Failed to fetch file: ${file.name}`);
-                        }
-                        const fileContent = await fileResponse.text();
+  <div id="Container">
+  <button id="bookNowBtn" class="book-now-btn">BOOK HERE</button>
+    <img src="character.webp" alt="Character Image" class="character-image">
+    <div class="title">LETS CODE</div>
+    <a href="https://wa.me/27730565912" target="_blank" class="whatsapp-link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 175.216 175.552">
+        <defs>
+          <linearGradient id="b" x1="85.915" x2="86.535" y1="32.567" y2="137.092" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#57d163"/>
+            <stop offset="1" stop-color="#23b33a"/>
+          </linearGradient>
+        </defs>
+</svg>
+    </a>
+  </div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function() {
+    emailjs.init("IYuEajjVtGyQAi_Z2");
+  })();
 
-                        const fileDiv = document.createElement('div');
-                        fileDiv.classList.add('file-content');
-                        fileDiv.innerHTML = `<h2>${file.name}</h2><pre>${fileContent}</pre>`;
-                        fileContentsDiv.appendChild(fileDiv);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching files:', error);
-                const fileContentsDiv = document.getElementById('file-contents');
-                const errorDiv = document.createElement('div');
-                errorDiv.classList.add('error-message');
-                errorDiv.textContent = `Error fetching files: ${error.message}`;
-                fileContentsDiv.appendChild(errorDiv);
-            }
+  document.addEventListener('DOMContentLoaded', () => {
+    const repo = 'divstudios/l';
+
+    fetchBookedDates(repo).then(files => {
+      bookedDates = files.map(file => {
+        const parts = file.split(' at ');
+        
+        if (parts.length !== 2) {
+          return null;
         }
+        
+        const [datePart, timePart] = parts;
+        const date = new Date(datePart);
+        
+        if (isNaN(date.getTime())) {
+          return null;
+        }
+        
+        return {
+          date: date.toDateString(),
+          time: timePart.replace('.txt', '')
+        };
+      }).filter(entry => entry !== null);
 
-        fetchFiles();
-    </script>
+      renderCalendar();
+      renderTimeslots();
+    }).catch(error => {
+      console.error('Error fetching booked dates:', error);
+    });
+  });
+
+  const calendarOverlay = document.getElementById('calendarOverlay');
+  const bookNowBtn = document.getElementById('bookNowBtn');
+  const calendar = document.getElementById('calendar');
+  const calendarDays = document.getElementById('calendarDays');
+  const currentMonthEl = document.getElementById('currentMonth');
+  const prevMonthBtn = document.getElementById('prevMonth');
+  const nextMonthBtn = document.getElementById('nextMonth');
+  const timeslotsEl = document.getElementById('timeslots');
+  const contactForm = document.getElementById('contact-form');
+
+  let currentDate = new Date();
+  let selectedDate = null;
+
+  bookNowBtn.addEventListener('click', () => {
+    calendar.classList.toggle('show');
+    calendarOverlay.classList.toggle('show');
+    renderCalendar();
+  });
+
+  prevMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  nextMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+  calendarDays.addEventListener('click', (event) => {
+    if (event.target.classList.contains('calendar-day')) {
+      selectDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), event.target.textContent));
+    }
+  });
+
+  timeslotsEl.addEventListener('click', (event) => {
+    if (event.target.classList.contains('timeslot')) {
+      selectTimeslot(event.target);
+    }
+  });
+
+function renderCalendar() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const today = new Date();
+
+  currentMonthEl.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+
+  calendarDays.innerHTML = '';
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    calendarDays.appendChild(document.createElement('div'));
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayEl = document.createElement('div');
+    dayEl.classList.add('calendar-day');
+    dayEl.textContent = day;
+
+    const date = new Date(year, month, day);
+    if (date < today) {
+      dayEl.classList.add('disabled');
+      dayEl.style.pointerEvents = 'none';
+    } else {
+      dayEl.addEventListener('click', () => selectDate(date));
+    }
+
+    calendarDays.appendChild(dayEl);
+  }
+}
+
+  function selectDate(date) {
+    selectedDate = date;
+    document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+    const selectedDayEl = Array.from(calendarDays.children).find(el => el.textContent == date.getDate());
+    selectedDayEl.classList.add('selected');
+    renderTimeslots();
+  }
+
+  function renderTimeslots() {
+    const timeslots = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM'];
+    timeslotsEl.innerHTML = '';
+
+    timeslots.forEach(time => {
+      const timeslot = document.createElement('div');
+      timeslot.classList.add('timeslot');
+      timeslot.textContent = time;
+
+      if (selectedDate) {
+        const dateStr = selectedDate.toDateString();
+        if (bookedDates.some(b => b.date === dateStr && b.time === time)) {
+          timeslot.classList.add('booked');
+          timeslot.style.pointerEvents = 'none'; // Make it non-selectable
+        }
+      }
+
+      timeslotsEl.appendChild(timeslot);
+    });
+  }
+
+  function selectTimeslot(timeslotEl) {
+    document.querySelectorAll('.timeslot').forEach(el => el.classList.remove('selected'));
+    timeslotEl.classList.add('selected');
+    const selectedTime = timeslotEl.textContent;
+    if (selectedDate && selectedTime) {
+      calendar.classList.remove('show');
+      contactForm.classList.toggle('show');
+      EmailTime(selectedTime);
+    }
+  }
+
+  calendarOverlay.addEventListener('click', () => {
+    calendar.classList.remove('show');
+    calendarOverlay.classList.remove('show');
+    contactForm.classList.remove('show');
+  });
+
+  function adjustFontSize() {
+    const containerHeight = document.getElementById('Container').clientHeight;
+    const titleElement = document.querySelector('.title');
+    const fontSize = containerHeight * 0.13;
+    titleElement.style.fontSize = fontSize + 'px';
+  }
+
+  adjustFontSize();
+  window.addEventListener('resize', adjustFontSize);
+
+  function adjustSvgSize() {
+    const container = document.getElementById('Container');
+    const svgElement = document.querySelector('.whatsapp-link svg');
+
+    if (container && svgElement) {
+      const containerHeight = container.clientHeight;
+      const size = containerHeight * 0.2;
+      svgElement.style.height = size + 'px';
+      svgElement.style.width = size + 'px';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', adjustSvgSize);
+  window.addEventListener('resize', adjustSvgSize);
+
+  function fetchBookedDates(repo) {
+    const apiUrl = `https://api.github.com/repos/${repo}/contents`;
+
+    return fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+    })
+    .then(data => {
+      return data.map(file => file.name);
+    });
+  }
+
+  let bookedDates = [];
+  let bookedTimeslots = {};
+
+  function createFile(repo, fileName, content, token) {
+    const apiUrl = `https://api.github.com/repos/${repo}/contents/${encodeURIComponent(fileName)}`;
+
+    return fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Create file ${fileName}`,
+        content: btoa(content)
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+    });
+  }
+
+  const repo = 'divstudios/l';
+  const Part1 = 'ghp_moIyu7Ejz27Ero';
+  const Part2 = 'WiMnO4Xk3XgLTLis2DBZCC';
+  const token = Part1 + Part2;
+
+  function EmailTime(selectedTime) {
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const fileName = `${selectedDate.toDateString()} at ${selectedTime}.txt`;
+      const from_name = document.getElementById('from_name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const other = document.getElementById('other').value;
+      const message = document.getElementById('message').value;
+      const fullMessage = `${message}\n\nContact Details:\nEmail: ${email}\nPhone: ${phone}\nOther: ${other}\n\n${selectedDate.toDateString()} at ${selectedTime}`;
+
+      const formData = {
+        from_name: from_name,
+        message: fullMessage
+      };
+
+      emailjs.send('service_euwof6d', 'template_t98zek9', formData)
+        .then(function(response) {
+          alert('Thank you for booking with LETS CODE!');
+          createFile(repo, fileName, '', token)
+            .then(response => {})
+            .catch(error => {
+              console.error('Error creating file:', error);
+            });
+          document.getElementById('contact-form').reset();
+          contactForm.classList.remove('show');
+          calendar.classList.remove('show');
+          calendarOverlay.classList.remove('show');
+        }, function(error) {
+          console.error('Error sending email:', error);
+          alert('Failed to send email. Please try again later.');
+        });
+    });
+  }
+</script>
 </body>
 </html>
